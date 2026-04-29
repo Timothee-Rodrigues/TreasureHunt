@@ -117,14 +117,8 @@ function showSuccess(clue: string): void {
 function renderUnlockedClues(): void {
   const unlockedClues = getUnlockedClues();
   const container = document.getElementById('unlocked-clues');
-  const countElement = document.getElementById('unlocked-count');
   
   if (!container) return;
-  
-  // Update count
-  if (countElement && config) {
-    countElement.textContent = `${unlockedClues.length} of ${config.clues.length} clues unlocked`;
-  }
   
   // Clear container
   container.innerHTML = '';
@@ -150,7 +144,8 @@ function renderUnlockedClues(): void {
     const timeElement = document.createElement('div');
     timeElement.className = 'clue-time';
     const date = new Date(unlockedClue.unlockedAt);
-    timeElement.textContent = `Unlocked: ${date.toLocaleString()}`;
+    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    timeElement.textContent = `Unlocked: ${timeStr}`;
     
     clueElement.appendChild(codeElement);
     clueElement.appendChild(textElement);
