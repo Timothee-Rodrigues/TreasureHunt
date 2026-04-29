@@ -15,12 +15,22 @@ export interface ClueConfig {
 }
 
 /**
+ * GPS coordinates
+ */
+export interface GpsCoordinates {
+  latitude: number;
+  longitude: number;
+}
+
+/**
  * Unlocked clue with metadata
  */
 export interface UnlockedClue {
   code: string;
   clue: string;
   unlockedAt: string; // ISO 8601 timestamp
+  gpsCoordinates?: GpsCoordinates | null; // Optional GPS location when unlocked
+  synced: boolean; // Whether this clue has been synced to the server
 }
 
 /**

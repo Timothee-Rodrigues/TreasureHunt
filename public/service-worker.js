@@ -1,13 +1,16 @@
-const CACHE_NAME = 'treasure-hunt-v1';
+const CACHE_NAME = 'treasure-hunt-v2';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './manifest.json',
   './clues.json',
+  './config.json',
   './dist/app.js',
   './dist/types.js',
   './dist/storage.js',
+  './dist/geolocation.js',
+  './dist/sync.js',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];

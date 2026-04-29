@@ -1,5 +1,7 @@
 import { ClueConfig, Clue } from './types.js';
 import { getUnlockedClues, saveUnlockedClue, isClueUnlocked } from './storage.js';
+import { getCurrentPosition } from './geolocation.js';
+import { startBackgroundSync } from './sync.js';
 
 let config: ClueConfig | null = null;
 
@@ -46,7 +48,7 @@ function findClueByCode(code: string): Clue | undefined {
 /**
  * Handle code submission
  */
-function handleCodeSubmit(event: Event): void {
+async function handleCodeSubmit(event: Event): Promise<void> {
   event.preventDefault();
   
   const input = document.getElementById('code-input') as HTMLInputElement;
@@ -65,8 +67,11 @@ function handleCodeSubmit(event: Event): void {
   const clue = findClueByCode(code);
   
   if (clue) {
-    // Valid code found
-    saveUnlockedClue(clue.code, clue.clue);
+    // Valid code found - capture GPS first (non-blocking)
+    const gpsCoordinates = await getCurrentPosition();
+    
+    // Save with GPS coordinates (may be null if GPS failed/denied)
+    saveUnlockedClue(clue.code, clue.clue, gpsCoordinates);
     showSuccess(clue.clue);
     renderUnlockedClues();
     input.value = ''; // Clear input
@@ -184,6 +189,9 @@ async function init(): Promise<void> {
   
   // Register service worker
   await registerServiceWorker();
+  
+  // Start background sync to server
+  await startBackgroundSync();
   
   // Focus on input
   const input = document.getElementById('code-input') as HTMLInputElement;
