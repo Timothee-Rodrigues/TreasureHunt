@@ -24,10 +24,11 @@ export interface GpsCoordinates {
 
 /**
  * Unlocked clue with metadata
+ * 
+ * Note: Clue text is not stored - it's looked up from config by code
  */
 export interface UnlockedClue {
   code: string;
-  clue: string;
   unlockedAt: string; // ISO 8601 timestamp
   gpsCoordinates?: GpsCoordinates | null; // Optional GPS location when unlocked
   synced: boolean; // Whether this clue has been synced to the server

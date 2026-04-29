@@ -22,8 +22,10 @@ export function getUnlockedClues(): UnlockedClue[] {
 
 /**
  * Save a newly unlocked clue to local storage
+ * 
+ * Note: Only stores code, timestamp, and GPS. Clue text is looked up from config.
  */
-export function saveUnlockedClue(code: string, clue: string, gpsCoordinates?: GpsCoordinates | null): void {
+export function saveUnlockedClue(code: string, gpsCoordinates?: GpsCoordinates | null): void {
   try {
     const unlockedClues = getUnlockedClues();
     
@@ -34,7 +36,6 @@ export function saveUnlockedClue(code: string, clue: string, gpsCoordinates?: Gp
     
     const newClue: UnlockedClue = {
       code: code.toUpperCase(),
-      clue,
       unlockedAt: new Date().toISOString(),
       gpsCoordinates: gpsCoordinates ?? null,
       synced: false // New clues are not synced yet

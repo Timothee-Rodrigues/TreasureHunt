@@ -71,7 +71,7 @@ async function handleCodeSubmit(event: Event): Promise<void> {
     const gpsCoordinates = await getCurrentPosition();
     
     // Save with GPS coordinates (may be null if GPS failed/denied)
-    saveUnlockedClue(clue.code, clue.clue, gpsCoordinates);
+    saveUnlockedClue(clue.code, gpsCoordinates);
     showSuccess(clue.clue);
     renderUnlockedClues();
     input.value = ''; // Clear input
@@ -144,7 +144,10 @@ function renderUnlockedClues(): void {
     
     const textElement = document.createElement('div');
     textElement.className = 'clue-text';
-    textElement.textContent = unlockedClue.clue;
+    
+    // Look up clue text from config by code
+    const clueData = findClueByCode(unlockedClue.code);
+    textElement.textContent = clueData?.clue || '[Clue not found]';
     
     const timeElement = document.createElement('div');
     timeElement.className = 'clue-time';
