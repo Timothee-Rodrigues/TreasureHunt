@@ -3,6 +3,9 @@ node_modules/
 .pnp
 .pnp.js
 
+# Build output
+dist/
+
 # Testing
 coverage/
 .nyc_output
