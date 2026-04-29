@@ -8,8 +8,8 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
-  color: #333;
-  background: white;
+  color: #2C2C2C;
+  background: #FFF9E6;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -24,7 +24,7 @@ body {
 
 /* Header */
 header {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  background: linear-gradient(180deg, #5CB85C 0%, #4CAF50 100%);
   color: white;
   padding: 2rem 1.5rem;
   text-align: center;
@@ -37,7 +37,7 @@ h1 {
 
 .subtitle {
   font-size: 1rem;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 /* Main Content */
@@ -59,42 +59,49 @@ main {
 #code-input {
   font-size: 1.5rem;
   padding: 1rem;
-  border: 2px solid #ddd;
+  border: 3px solid #ddd;
   border-radius: 0.5rem;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
   font-weight: bold;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background: white;
 }
 
 #code-input:focus {
   outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  border-color: #5CB85C;
+  box-shadow: 0 0 0 3px rgba(92, 184, 92, 0.3);
 }
 
 /* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  background: #5CB85C;
   color: white;
   font-size: 1.125rem;
   font-weight: bold;
   padding: 1rem 2rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
   min-height: 56px; /* Good touch target size */
+  position: relative;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 6px 0 #4A9B4D;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .btn-primary:hover {
+  background: #6FCF6F;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 8px 0 #4A9B4D;
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #4A9B4D;
 }
 
 /* Messages */
@@ -108,15 +115,15 @@ main {
 }
 
 .message.error {
-  background: #ffebee;
-  color: #c62828;
-  border: 2px solid #ef5350;
+  background: #FFEBEE;
+  color: #C62828;
+  border: 2px solid #EF5350;
 }
 
 .message.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border: 2px solid #66bb6a;
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 2px solid #5CB85C;
   font-weight: 500;
 }
 
@@ -135,22 +142,23 @@ main {
 .progress-section {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: #f5f5f5;
+  background: #F5F5F5; /* subtle neutral background */
   border-radius: 0.5rem;
   text-align: center;
+  border: 2px solid #bbbbbb; /* neutral gray border */
 }
 
 .progress-text {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #666;
+  color: #555555;
 }
 
 /* Unlocked Clues Section */
 .unlocked-section h2 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: #555555; /* title uses neutral gray */
 }
 
 #unlocked-clues {
@@ -167,35 +175,40 @@ main {
 }
 
 .unlocked-clue {
-  background: #f9f9f9;
-  border: 2px solid #e0e0e0;
+  background: white;
+  border: 3px solid #cccccc; /* neutral gray border */
   border-radius: 0.5rem;
   padding: 1rem;
-  transition: box-shadow 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s;
 }
 
 .unlocked-clue:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(92, 184, 92, 0.3);
 }
 
 .clue-code {
   font-size: 0.875rem;
   font-weight: bold;
-  color: #4CAF50;
+  color: #555555; /* neutral gray for code label text */
   margin-bottom: 0.5rem;
   letter-spacing: 0.1rem;
+  background: #f0f0f0; /* subtle light background */
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  display: inline-block;
 }
 
 .clue-text {
   font-size: 1.125rem;
-  color: #333;
+  color: #2C2C2C;
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
 
 .clue-time {
   font-size: 0.75rem;
-  color: #999;
+  color: #5CB85C;
 }
 
 /* Footer */
@@ -212,11 +225,13 @@ footer {
 }
 
 .offline-indicator .online {
-  color: #4CAF50;
+  color: #555555;
+  font-weight: 600;
 }
 
 .offline-indicator .offline {
-  color: #ff9800;
+  color: #999999;
+  font-weight: 600;
 }
 
 /* Accessibility */
