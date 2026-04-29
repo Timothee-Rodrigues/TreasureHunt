@@ -62,11 +62,11 @@ All codes are case-insensitive:
 
 | Code | Clue |
 |------|------|
-| A3X7Q | Look under the old oak tree near the stream |
-| B7K2M | Follow the trail north until you see the red marker |
-| C9P4N | The next clue is hidden inside the hollow log |
-| D1W8R | Search by the stone bridge on the eastern path |
-| E5T6Y | Congratulations! You found the final treasure location! |
+| A3X7Q | Regardez sous le vieux chêne près du ruisseau |
+| B7K2M | Suivez le sentier vers le nord jusqu'au panneau rouge |
+| C9P4N | L'indice suivant est caché dans la bûche creuse |
+| D1W8R | Cherchez près du pont de pierre sur le sentier est |
+| E5T6Y | Félicitations ! Vous avez trouvé l'emplacement final du trésor ! |
 
 ## Customization for Your Hunt
 

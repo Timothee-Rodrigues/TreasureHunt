@@ -1,25 +1,25 @@
 {
-  "huntTitle": "Forest Treasure Hunt",
+  "huntTitle": "Chasse au trésor en forêt",
   "clues": [
     {
       "code": "A3X7Q",
-      "clue": "Look under the old oak tree near the stream"
+      "clue": "Regardez sous le vieux chêne près du ruisseau"
     },
     {
       "code": "B7K2M",
-      "clue": "Follow the trail north until you see the red marker"
+      "clue": "Suivez le sentier vers le nord jusqu'au panneau rouge"
     },
     {
       "code": "C9P4N",
-      "clue": "The next clue is hidden inside the hollow log"
+      "clue": "L'indice suivant est caché dans la bûche creuse"
     },
     {
       "code": "D1W8R",
-      "clue": "Search by the stone bridge on the eastern path"
+      "clue": "Cherchez près du pont de pierre sur le sentier est"
     },
     {
       "code": "E5T6Y",
-      "clue": "Congratulations! You found the final treasure location!"
+      "clue": "Félicitations ! Vous avez trouvé l'emplacement final du trésor !"
     }
   ]
 }

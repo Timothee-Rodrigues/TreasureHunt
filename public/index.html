@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Offline-first treasure hunt app">
+  <meta name="description" content="Application de chasse au trésor hors-ligne">
   <meta name="theme-color" content="#4CAF50">
   
   <!-- PWA Meta Tags -->
@@ -11,32 +11,32 @@
   <link rel="icon" type="image/png" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   
-  <title>Treasure Hunt</title>
+  <title>Chasse au trésor</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1 id="hunt-title">Treasure Hunt</h1>
-      <p class="subtitle">Enter your code to unlock clues</p>
+      <h1 id="hunt-title">Chasse au trésor</h1>
+      <p class="subtitle">Entrez votre code pour débloquer les indices</p>
     </header>
     
     <main>
       <!-- Code Input Section -->
       <section class="code-section">
         <form id="code-form">
-          <label for="code-input" class="visually-hidden">Enter 5-character code</label>
+          <label for="code-input" class="visually-hidden">Entrez un code de 5 caractères</label>
           <input 
             type="text" 
             id="code-input" 
             maxlength="5" 
-            placeholder="Enter code"
+            placeholder="Entrez le code"
             autocomplete="off"
             autocapitalize="characters"
             spellcheck="false"
             required
           >
-          <button type="submit" class="btn-primary">Unlock Clue</button>
+          <button type="submit" class="btn-primary">Débloquer l'indice</button>
         </form>
         
         <div id="message" class="message" style="display: none;"></div>
@@ -44,9 +44,9 @@
       
       <!-- Unlocked Clues Section -->
       <section class="unlocked-section">
-        <h2>Your Unlocked Clues</h2>
+        <h2>Vos indices débloqués</h2>
         <div id="unlocked-clues">
-          <p class="no-clues">No clues unlocked yet. Enter a code to begin!</p>
+          <p class="no-clues">Aucun indice débloqué pour l'instant. Entrez un code pour commencer !</p>
         </div>
       </section>
     </main>
@@ -66,10 +66,10 @@
       const status = document.getElementById('offline-status');
       if (status) {
         if (navigator.onLine) {
-          status.textContent = '📶 Online';
+          status.textContent = '📶 En ligne';
           status.className = 'online';
         } else {
-          status.textContent = '📴 Offline';
+          status.textContent = '📴 Hors ligne';
           status.className = 'offline';
         }
       }

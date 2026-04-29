@@ -53,12 +53,12 @@ function handleCodeSubmit(event: Event): void {
   const code = input.value.trim();
   
   if (!code) {
-    showError('Please enter a code');
+    showError('Veuillez entrer un code');
     return;
   }
   
   if (code.length !== 5) {
-    showError('Code must be 5 characters');
+    showError('Le code doit comporter 5 caractères');
     return;
   }
   
@@ -72,7 +72,7 @@ function handleCodeSubmit(event: Event): void {
     input.value = ''; // Clear input
   } else {
     // Invalid code
-    showError('Invalid code');
+    showError('Code invalide');
     input.value = ''; // Clear input
   }
 }
@@ -101,7 +101,7 @@ function showSuccess(clue: string): void {
   const messageDiv = document.getElementById('message');
   if (messageDiv) {
     messageDiv.className = 'message success';
-    messageDiv.textContent = `🎉 ${clue}`;
+    messageDiv.textContent = `🎉 Indice : ${clue}`;
     messageDiv.style.display = 'block';
     
     // Auto-hide after 10 seconds
@@ -124,7 +124,7 @@ function renderUnlockedClues(): void {
   container.innerHTML = '';
   
   if (unlockedClues.length === 0) {
-    container.innerHTML = '<p class="no-clues">No clues unlocked yet. Enter a code to begin!</p>';
+    container.innerHTML = '<p class="no-clues">Aucun indice débloqué pour l\'instant. Entrez un code pour commencer !</p>';
     return;
   }
   
@@ -135,7 +135,7 @@ function renderUnlockedClues(): void {
     
     const codeElement = document.createElement('div');
     codeElement.className = 'clue-code';
-    codeElement.textContent = `Code: ${unlockedClue.code}`;
+    codeElement.textContent = `Code : ${unlockedClue.code}`;
     
     const textElement = document.createElement('div');
     textElement.className = 'clue-text';
@@ -144,8 +144,8 @@ function renderUnlockedClues(): void {
     const timeElement = document.createElement('div');
     timeElement.className = 'clue-time';
     const date = new Date(unlockedClue.unlockedAt);
-    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    timeElement.textContent = `Unlocked: ${timeStr}`;
+    const timeStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    timeElement.textContent = `Débloqué : ${timeStr}`;
     
     clueElement.appendChild(codeElement);
     clueElement.appendChild(textElement);
