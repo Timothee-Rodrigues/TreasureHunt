@@ -1,0 +1,25 @@
+{
+  "huntTitle": "Forest Treasure Hunt",
+  "clues": [
+    {
+      "code": "A3X7Q",
+      "clue": "Look under the old oak tree near the stream"
+    },
+    {
+      "code": "B7K2M",
+      "clue": "Follow the trail north until you see the red marker"
+    },
+    {
+      "code": "C9P4N",
+      "clue": "The next clue is hidden inside the hollow log"
+    },
+    {
+      "code": "D1W8R",
+      "clue": "Search by the stone bridge on the eastern path"
+    },
+    {
+      "code": "E5T6Y",
+      "clue": "Congratulations! You found the final treasure location!"
+    }
+  ]
+}

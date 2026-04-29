@@ -1,0 +1,24 @@
+{
+  "name": "treasure-hunt-pwa",
+  "version": "1.0.0",
+  "description": "Offline-first Progressive Web App for treasure hunts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rimraf public/dist",
+    "dev": "npm run build && npx http-server public -p 8080 -c-1"
+  },
+  "keywords": [
+    "pwa",
+    "treasure-hunt",
+    "offline"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.4.0"
+  }
+}

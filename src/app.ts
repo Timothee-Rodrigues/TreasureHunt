@@ -1,0 +1,205 @@
+import { ClueConfig, Clue } from './types.js';
+import { getUnlockedClues, saveUnlockedClue, isClueUnlocked } from './storage.js';
+
+let config: ClueConfig | null = null;
+
+/**
+ * Load clues configuration from JSON file
+ */
+async function loadConfig(): Promise<void> {
+  try {
+    const response = await fetch('./clues.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    config = await response.json();
+    updateHuntTitle();
+    renderUnlockedClues();
+  } catch (error) {
+    console.error('Error loading clues configuration:', error);
+    showError('Failed to load treasure hunt data. Please refresh the page.');
+  }
+}
+
+/**
+ * Update the hunt title in the UI
+ */
+function updateHuntTitle(): void {
+  if (config) {
+    const titleElement = document.getElementById('hunt-title');
+    if (titleElement) {
+      titleElement.textContent = config.huntTitle;
+    }
+  }
+}
+
+/**
+ * Find a clue by code (case-insensitive)
+ */
+function findClueByCode(code: string): Clue | undefined {
+  if (!config) return undefined;
+  
+  const normalizedInput = code.toUpperCase().trim();
+  return config.clues.find(c => c.code.toUpperCase() === normalizedInput);
+}
+
+/**
+ * Handle code submission
+ */
+function handleCodeSubmit(event: Event): void {
+  event.preventDefault();
+  
+  const input = document.getElementById('code-input') as HTMLInputElement;
+  const code = input.value.trim();
+  
+  if (!code) {
+    showError('Please enter a code');
+    return;
+  }
+  
+  if (code.length !== 5) {
+    showError('Code must be 5 characters');
+    return;
+  }
+  
+  const clue = findClueByCode(code);
+  
+  if (clue) {
+    // Valid code found
+    saveUnlockedClue(clue.code, clue.clue);
+    showSuccess(clue.clue);
+    renderUnlockedClues();
+    input.value = ''; // Clear input
+  } else {
+    // Invalid code
+    showError('Invalid code');
+    input.value = ''; // Clear input
+  }
+}
+
+/**
+ * Show error message
+ */
+function showError(message: string): void {
+  const messageDiv = document.getElementById('message');
+  if (messageDiv) {
+    messageDiv.className = 'message error';
+    messageDiv.textContent = message;
+    messageDiv.style.display = 'block';
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+      messageDiv.style.display = 'none';
+    }, 3000);
+  }
+}
+
+/**
+ * Show success message with clue
+ */
+function showSuccess(clue: string): void {
+  const messageDiv = document.getElementById('message');
+  if (messageDiv) {
+    messageDiv.className = 'message success';
+    messageDiv.textContent = `🎉 ${clue}`;
+    messageDiv.style.display = 'block';
+    
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+      messageDiv.style.display = 'none';
+    }, 10000);
+  }
+}
+
+/**
+ * Render the list of unlocked clues
+ */
+function renderUnlockedClues(): void {
+  const unlockedClues = getUnlockedClues();
+  const container = document.getElementById('unlocked-clues');
+  const countElement = document.getElementById('unlocked-count');
+  
+  if (!container) return;
+  
+  // Update count
+  if (countElement && config) {
+    countElement.textContent = `${unlockedClues.length} of ${config.clues.length} clues unlocked`;
+  }
+  
+  // Clear container
+  container.innerHTML = '';
+  
+  if (unlockedClues.length === 0) {
+    container.innerHTML = '<p class="no-clues">No clues unlocked yet. Enter a code to begin!</p>';
+    return;
+  }
+  
+  // Render each unlocked clue
+  unlockedClues.forEach((unlockedClue, index) => {
+    const clueElement = document.createElement('div');
+    clueElement.className = 'unlocked-clue';
+    
+    const codeElement = document.createElement('div');
+    codeElement.className = 'clue-code';
+    codeElement.textContent = `Code: ${unlockedClue.code}`;
+    
+    const textElement = document.createElement('div');
+    textElement.className = 'clue-text';
+    textElement.textContent = unlockedClue.clue;
+    
+    const timeElement = document.createElement('div');
+    timeElement.className = 'clue-time';
+    const date = new Date(unlockedClue.unlockedAt);
+    timeElement.textContent = `Unlocked: ${date.toLocaleString()}`;
+    
+    clueElement.appendChild(codeElement);
+    clueElement.appendChild(textElement);
+    clueElement.appendChild(timeElement);
+    
+    container.appendChild(clueElement);
+  });
+}
+
+/**
+ * Register service worker for offline functionality
+ */
+async function registerServiceWorker(): Promise<void> {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register('./service-worker.js');
+      console.log('Service Worker registered:', registration);
+    } catch (error) {
+      console.error('Service Worker registration failed:', error);
+    }
+  }
+}
+
+/**
+ * Initialize the application
+ */
+async function init(): Promise<void> {
+  // Load configuration
+  await loadConfig();
+  
+  // Setup event listeners
+  const form = document.getElementById('code-form');
+  if (form) {
+    form.addEventListener('submit', handleCodeSubmit);
+  }
+  
+  // Register service worker
+  await registerServiceWorker();
+  
+  // Focus on input
+  const input = document.getElementById('code-input') as HTMLInputElement;
+  if (input) {
+    input.focus();
+  }
+}
+
+// Start the app when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
