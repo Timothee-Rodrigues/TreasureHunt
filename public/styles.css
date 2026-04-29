@@ -108,6 +108,26 @@ main {
   background: #4A9B4D;
 }
 
+/* Click animation that persists */
+.btn-primary.clicked {
+  animation: clickPulse 0.4s ease;
+}
+
+@keyframes clickPulse {
+  0% {
+    transform: translateY(4px) scale(0.95);
+    box-shadow: 0 2px 0 #4A9B4D;
+  }
+  50% {
+    transform: translateY(4px) scale(0.92);
+    box-shadow: 0 2px 0 #4A9B4D, 0 0 0 8px rgba(92, 184, 92, 0.3);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 6px 0 #4A9B4D;
+  }
+}
+
 /* Messages */
 .message {
   padding: 1rem;

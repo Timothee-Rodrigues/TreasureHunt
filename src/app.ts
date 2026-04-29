@@ -190,6 +190,17 @@ async function init(): Promise<void> {
     form.addEventListener('submit', handleCodeSubmit);
   }
   
+  // Add click animation to button
+  const submitButton = document.querySelector('.btn-primary') as HTMLButtonElement;
+  if (submitButton) {
+    submitButton.addEventListener('click', () => {
+      submitButton.classList.add('clicked');
+      setTimeout(() => {
+        submitButton.classList.remove('clicked');
+      }, 400);
+    });
+  }
+  
   // Register service worker
   await registerServiceWorker();
   

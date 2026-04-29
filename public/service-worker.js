@@ -1,4 +1,4 @@
-const CACHE_NAME = 'treasure-hunt-v3';
+const CACHE_NAME = 'treasure-hunt-v4';
 const ASSETS = [
   './',
   './index.html',
