@@ -90,7 +90,7 @@ main {
   cursor: pointer;
   min-height: 64px; /* Larger touch target */
   position: relative;
-  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
+  transition: all 0.1s ease;
   box-shadow: 0 6px 0 #4A9B4D;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -103,23 +103,9 @@ main {
 }
 
 .btn-primary:active {
-  transform: translateY(4px);
+  transform: translateY(4px) scale(0.95);
   box-shadow: 0 2px 0 #4A9B4D;
   background: #4A9B4D;
-  animation: pressFlash 0.3s ease;
-}
-
-/* Flash animation on press */
-@keyframes pressFlash {
-  0% {
-    background: #6FCF6F;
-  }
-  50% {
-    background: #4A9B4D;
-  }
-  100% {
-    background: #4A9B4D;
-  }
 }
 
 /* Messages */
