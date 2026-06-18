@@ -58,3 +58,6 @@ lerna-debug.log*
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Editor directories and files
+*.code-workspace
