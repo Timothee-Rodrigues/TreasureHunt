@@ -1,9 +1,10 @@
-import { ClueConfig, Clue } from './types.js';
+import { Config, Clue, Hunt } from './types.js';
 import { getUnlockedClues, saveUnlockedClue, isClueUnlocked } from './storage.js';
 import { getCurrentPosition } from './geolocation.js';
 import { startBackgroundSync } from './sync.js';
 
-let config: ClueConfig | null = null;
+let config: Config | null = null;
+let currentHunt: Hunt | null = null;
 
 /**
  * Load clues configuration from JSON file
@@ -15,6 +16,11 @@ async function loadConfig(): Promise<void> {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     config = await response.json();
+    if (!config) {
+      throw new Error('Configuration is null or undefined');
+    }
+
+    currentHunt = config.hunts[0]; // Assuming the first hunt is the active one
     updateHuntTitle();
     renderUnlockedClues();
   } catch (error) {
@@ -27,10 +33,10 @@ async function loadConfig(): Promise<void> {
  * Update the hunt title in the UI
  */
 function updateHuntTitle(): void {
-  if (config) {
+  if (currentHunt) {
     const titleElement = document.getElementById('hunt-title');
     if (titleElement) {
-      titleElement.textContent = config.huntTitle;
+      titleElement.textContent = currentHunt.huntTitle;
     }
   }
 }
@@ -39,10 +45,10 @@ function updateHuntTitle(): void {
  * Find a clue by code (case-insensitive)
  */
 function findClueByCode(code: string): Clue | undefined {
-  if (!config) return undefined;
+  if (!currentHunt) return undefined;
   
   const normalizedInput = code.toUpperCase().trim();
-  return config.clues.find(c => c.code.toUpperCase() === normalizedInput);
+  return currentHunt.clues.find(c => c.code.toUpperCase() === normalizedInput);
 }
 
 /**

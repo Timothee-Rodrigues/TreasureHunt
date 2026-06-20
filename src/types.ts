@@ -9,9 +9,14 @@ export interface Clue {
 /**
  * Configuration structure for the treasure hunt
  */
-export interface ClueConfig {
+export interface Hunt {
+  huntNumber: number;
   huntTitle: string;
   clues: Clue[];
+}
+
+export interface Config {
+  hunts: Hunt[];
 }
 
 /**

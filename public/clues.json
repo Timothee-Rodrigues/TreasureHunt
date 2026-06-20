@@ -1,25 +1,30 @@
 {
-  "huntTitle": "Chasse au trésor en forêt",
-  "clues": [
+  "hunts": [
     {
-      "code": "A3X7Q",
-      "clue": "Regardez sous le vieux chêne près du ruisseau"
-    },
-    {
-      "code": "B7K2M",
-      "clue": "Suivez le sentier vers le nord jusqu'au panneau rouge"
-    },
-    {
-      "code": "C9P4N",
-      "clue": "L'indice suivant est caché dans la bûche creuse"
-    },
-    {
-      "code": "D1W8R",
-      "clue": "Cherchez près du pont de pierre sur le sentier est"
-    },
-    {
-      "code": "E5T6Y",
-      "clue": "Félicitations ! Vous avez trouvé l'emplacement final du trésor !"
+      "huntNumber": 1,
+      "huntTitle": "Chasse au trésor en forêt",
+      "clues": [
+        {
+          "code": "A3X7Q",
+          "clue": "Regardez sous le vieux chêne près du ruisseau"
+        },
+        {
+          "code": "B7K2M",
+          "clue": "Suivez le sentier vers le nord jusqu'au panneau rouge"
+        },
+        {
+          "code": "C9P4N",
+          "clue": "L'indice suivant est caché dans la bûche creuse"
+        },
+        {
+          "code": "D1W8R",
+          "clue": "Cherchez près du pont de pierre sur le sentier est"
+        },
+        {
+          "code": "E5T6Y",
+          "clue": "Félicitations ! Vous avez trouvé l'emplacement final du trésor !"
+        }
+      ]
     }
   ]
 }
