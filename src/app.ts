@@ -30,6 +30,22 @@ async function loadConfig(): Promise<void> {
 }
 
 /**
+ * Switch to a different hunt
+ * @param huntId 
+ * @returns 
+ */
+function switchHunt(huntId: number): void {
+  if (!config) return;
+
+  const hunt = config.hunts.find(h => h.huntNumber === huntId);
+  if (hunt) {
+    currentHunt = hunt;
+    updateHuntTitle();
+    renderUnlockedClues();
+  }
+}
+
+/**
  * Update the hunt title in the UI
  */
 function updateHuntTitle(): void {
