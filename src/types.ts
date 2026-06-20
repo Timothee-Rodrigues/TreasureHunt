@@ -12,6 +12,7 @@ export interface Clue {
 export interface Hunt {
   huntNumber: number;
   huntTitle: string;
+  themeColor: string;
   clues: Clue[];
 }
 

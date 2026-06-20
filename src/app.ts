@@ -7,11 +7,69 @@ let config: Config | null = null;
 let currentHunt: Hunt | null = null;
 
 /**
- * Load clues configuration from JSON file
+ * Apply theme color to the UI
+ * Generates lighter and darker variants from the base color
+ */
+function applyThemeColor(baseColor: string): void {
+  const root = document.documentElement;
+  
+  // Set the primary color
+  root.style.setProperty('--primary-color', baseColor);
+  
+  // Update meta theme-color for browser UI
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute('content', baseColor);
+  }
+  
+  // Generate darker variant (darken by 15%)
+  const darker = adjustBrightness(baseColor, -0.15);
+  root.style.setProperty('--primary-dark', darker);
+  
+  // Generate lighter variant (lighten by 20%)
+  const lighter = adjustBrightness(baseColor, 0.2);
+  root.style.setProperty('--primary-light', lighter);
+  
+  // Generate shadow/darker variant for button shadows
+  const shadow = adjustBrightness(baseColor, -0.35);
+  root.style.setProperty('--primary-shadow', shadow);
+}
+
+/**
+ * Helper function to adjust color brightness
+ * @param color - Hex color string
+ * @param percent - Adjustment percentage (-1 to 1)
+ */
+function adjustBrightness(color: string, percent: number): string {
+  // Remove '#' if present
+  const hex = color.replace('#', '');
+  
+  // Parse hex to RGB
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  // Adjust brightness
+  const adjust = (value: number) => {
+    const adjusted = Math.round(value + 255 * percent);
+    return Math.max(0, Math.min(255, adjusted));
+  };
+  
+  const newR = adjust(r);
+  const newG = adjust(g);
+  const newB = adjust(b);
+  
+  // Convert back to hex
+  const toHex = (n: number) => n.toString(16).padStart(2, '0');
+  return `#${toHex(newR)}${toHex(newG)}${toHex(newB)}`;
+}
+
+/**
+ * Load hunts configuration from JSON file
  */
 async function loadConfig(): Promise<void> {
   try {
-    const response = await fetch('./clues.json');
+    const response = await fetch('./hunts.json');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -22,9 +80,10 @@ async function loadConfig(): Promise<void> {
 
     currentHunt = config.hunts[0]; // Assuming the first hunt is the active one
     updateHuntTitle();
+    applyThemeColor(currentHunt.themeColor);
     renderUnlockedClues();
   } catch (error) {
-    console.error('Error loading clues configuration:', error);
+    console.error('Error loading hunts configuration:', error);
     showError('Failed to load treasure hunt data. Please refresh the page.');
   }
 }
@@ -41,6 +100,7 @@ function switchHunt(huntId: number): void {
   if (hunt) {
     currentHunt = hunt;
     updateHuntTitle();
+    applyThemeColor(hunt.themeColor);
     renderUnlockedClues();
     renderHuntsInPanel();
     closeSidePanel();

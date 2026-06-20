@@ -2,7 +2,7 @@
   "hunts": [
     {
       "huntNumber": 1,
-      "themeColor": "#FF5733",
+      "themeColor": "#5CB85C",
       "huntTitle": "Parcours facile",
       "clues": [
         {
@@ -29,7 +29,7 @@
     },
     {
       "huntNumber": 2,
-      "themeColor": "#33FF57",
+      "themeColor": "#FF5733",
       "huntTitle": "Parcours difficile",
       "clues": [
         {
