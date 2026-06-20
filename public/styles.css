@@ -22,7 +22,138 @@ body {
   overflow-y: auto;
 }
 
-/* Header */
+/* Burger Menu */
+.burger-menu {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  background: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.burger-menu:hover {
+  background: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.burger-menu span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: #5CB85C;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.burger-menu.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.burger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* Side Panel */
+.side-panel {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  max-width: 300px;
+  height: 100vh;
+  background: white;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+}
+
+.side-panel.active {
+  left: 0;
+}
+
+.side-panel-content {
+  padding: 2rem 1.5rem 1rem 1.5rem;
+  padding-top: 5rem;
+}
+
+.side-panel-content h2 {
+  font-size: 1.25rem;
+  color: #5CB85C;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.hunts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hunt-item {
+  padding: 1rem;
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2C2C2C;
+  text-align: left;
+}
+
+.hunt-item:hover {
+  background: #5CB85C;
+  color: white;
+  border-color: #5CB85C;
+  transform: translateX(4px);
+}
+
+.hunt-item.active {
+  background: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+  font-weight: 600;
+}
+
+/* Panel Overlay */
+.panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.panel-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Header adjustment for burger menu */
 header {
   background: linear-gradient(180deg, #5CB85C 0%, #4CAF50 100%);
   color: white;

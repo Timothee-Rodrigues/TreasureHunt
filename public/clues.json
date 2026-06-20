@@ -2,6 +2,7 @@
   "hunts": [
     {
       "huntNumber": 1,
+      "themeColor": "#FF5733",
       "huntTitle": "Parcours facile",
       "clues": [
         {
@@ -23,6 +24,17 @@
         {
           "code": "E5T6Y",
           "clue": "Félicitations ! Vous avez trouvé l'emplacement final du trésor !"
+        }
+      ]
+    },
+    {
+      "huntNumber": 2,
+      "themeColor": "#33FF57",
+      "huntTitle": "Parcours difficile",
+      "clues": [
+        {
+          "code": "Z2L9V",
+          "clue": "Allez à la fontaine au centre du village et cherchez sous la pierre gravée"
         }
       ]
     }

@@ -42,6 +42,8 @@ function switchHunt(huntId: number): void {
     currentHunt = hunt;
     updateHuntTitle();
     renderUnlockedClues();
+    renderHuntsInPanel();
+    closeSidePanel();
   }
 }
 
@@ -200,16 +202,85 @@ async function registerServiceWorker(): Promise<void> {
 }
 
 /**
+ * Toggle the side panel
+ */
+function toggleSidePanel(): void {
+  const sidePanel = document.getElementById('side-panel');
+  const burgerMenu = document.getElementById('burger-menu');
+  const overlay = document.getElementById('panel-overlay');
+  
+  if (sidePanel && burgerMenu && overlay) {
+    sidePanel.classList.toggle('active');
+    burgerMenu.classList.toggle('active');
+    overlay.classList.toggle('active');
+  }
+}
+
+/**
+ * Close the side panel
+ */
+function closeSidePanel(): void {
+  const sidePanel = document.getElementById('side-panel');
+  const burgerMenu = document.getElementById('burger-menu');
+  const overlay = document.getElementById('panel-overlay');
+  
+  if (sidePanel && burgerMenu && overlay) {
+    sidePanel.classList.remove('active');
+    burgerMenu.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+}
+
+/**
+ * Render hunts in the side panel
+ */
+function renderHuntsInPanel(): void {
+  if (!config) return;
+  
+  const huntsList = document.getElementById('hunts-list');
+  if (!huntsList) return;
+  
+  huntsList.innerHTML = '';
+  
+  config.hunts.forEach(hunt => {
+    const huntItem = document.createElement('button');
+    huntItem.className = 'hunt-item';
+    if (currentHunt?.huntNumber === hunt.huntNumber) {
+      huntItem.classList.add('active');
+    }
+    huntItem.textContent = hunt.huntTitle;
+    huntItem.addEventListener('click', () => switchHunt(hunt.huntNumber));
+    
+    huntsList.appendChild(huntItem);
+  });
+}
+
+/**
  * Initialize the application
  */
 async function init(): Promise<void> {
   // Load configuration
   await loadConfig();
   
+  // Render hunts in the side panel
+  renderHuntsInPanel();
+  
   // Setup event listeners
   const form = document.getElementById('code-form');
   if (form) {
     form.addEventListener('submit', handleCodeSubmit);
+  }
+  
+  // Setup burger menu
+  const burgerMenu = document.getElementById('burger-menu');
+  if (burgerMenu) {
+    burgerMenu.addEventListener('click', toggleSidePanel);
+  }
+  
+  // Close panel when clicking overlay
+  const overlay = document.getElementById('panel-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', closeSidePanel);
   }
   
   // Add click animation to button
