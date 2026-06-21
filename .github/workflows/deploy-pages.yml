@@ -34,6 +34,15 @@ jobs:
         with:
           path: ./public
 
+      - name: Debug folder
+        run: |
+          echo "PWD:"
+          pwd
+          echo "ROOT:"
+          ls -R
+          echo "PUBLIC:"
+          ls -R ./public
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
