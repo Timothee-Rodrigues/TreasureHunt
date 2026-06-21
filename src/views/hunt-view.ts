@@ -21,7 +21,7 @@ export function displayHuntView() {
     <div id="panel-overlay" class="panel-overlay"></div>
     
     <header>
-      <h1 id="hunt-title">Chasse au trésor</h1>
+      <h1 id="hunt-title"></h1>
       <p class="subtitle">Entrez votre code pour débloquer les indices</p>
     </header>
     
