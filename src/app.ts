@@ -2,6 +2,7 @@ import { HuntsConfig, Clue, Hunt } from './types.js';
 import { getUnlockedClues, saveUnlockedClue, isClueUnlocked } from './storage.js';
 import { getCurrentPosition } from './geolocation.js';
 import { startBackgroundSync } from './sync.js';
+import { getCurrentHuntNumber, getHuntsConfig, setCurrentHuntNumber } from './hunts-config.js';
 
 let huntsConfig: HuntsConfig | null = null;
 let currentHunt: Hunt | null = null;
@@ -65,20 +66,23 @@ function adjustBrightness(color: string, percent: number): string {
 }
 
 /**
- * Load hunts configuration from JSON file
+ * Load hunts configuration
  */
-async function loadConfig(): Promise<void> {
+async function loadHunts(): Promise<void> {
   try {
-    const response = await fetch('./hunts.json');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    huntsConfig = await response.json();
+    huntsConfig = await getHuntsConfig();
     if (!huntsConfig) {
       throw new Error('Configuration is null or undefined');
     }
 
-    currentHunt = huntsConfig.hunts[0]; // Assuming the first hunt is the active one
+    const currentHuntNumber = await getCurrentHuntNumber();
+
+    // If no current hunt is set: take the first hunt as default
+    currentHunt = 
+      currentHuntNumber !== null
+      ? huntsConfig.hunts.find(h => h.huntNumber === currentHuntNumber) ?? huntsConfig.hunts[0]
+      : huntsConfig.hunts[0];
+
     updateHuntTitle();
     applyThemeColor(currentHunt.themeColor);
     renderUnlockedClues();
@@ -98,6 +102,7 @@ function switchHunt(huntId: number): void {
 
   const hunt = huntsConfig.hunts.find(h => h.huntNumber === huntId);
   if (hunt) {
+    setCurrentHuntNumber(hunt.huntNumber);
     currentHunt = hunt;
     updateHuntTitle();
     applyThemeColor(hunt.themeColor);
@@ -319,9 +324,9 @@ function renderHuntsInPanel(): void {
  * Initialize the application
  */
 async function init(): Promise<void> {
-  // Load configuration
-  await loadConfig();
-  
+  // Load hunts configuration
+  await loadHunts();
+
   // Render hunts in the side panel
   renderHuntsInPanel();
   
