@@ -131,12 +131,9 @@ async function handleCodeSubmit(event: Event): Promise<void> {
   const clue = findClueByCode(code);
   
   if (clue) {
-    // Valid code found - capture GPS first (non-blocking)
-    const gpsCoordinates = await getCurrentPosition();
-    
-    // Save with GPS coordinates (may be null if GPS failed/denied)
-    saveUnlockedClue(clue.code, gpsCoordinates);
-    showSuccess(clue.clue);
+    // Save
+    saveUnlockedClue(clue.code);
+    showSuccess(clue.description);
     renderUnlockedClues();
     input.value = ''; // Clear input
   } else {
@@ -211,7 +208,7 @@ function renderUnlockedClues(): void {
     
     // Look up clue text from config by code
     const clueData = findClueByCode(unlockedClue.code);
-    textElement.textContent = clueData?.clue || '[Clue not found]';
+    textElement.textContent = clueData?.description || '[Clue not found]';
     
     const timeElement = document.createElement('div');
     timeElement.className = 'clue-time';

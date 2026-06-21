@@ -4,7 +4,7 @@
 export interface Clue {
   sequenceNumber: number;
   code: string;
-  clue: string;
+  description: string;
 }
 
 /**
