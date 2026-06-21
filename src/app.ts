@@ -1,9 +1,12 @@
-import { Config, Clue, Hunt } from './types.js';
+import { HuntsConfig, Clue, Hunt } from './types.js';
 import { getUnlockedClues, saveUnlockedClue, isClueUnlocked } from './storage.js';
 import { getCurrentPosition } from './geolocation.js';
 import { startBackgroundSync } from './sync.js';
+import { getCurrentHuntNumber, getHuntsConfig, setCurrentHuntNumber } from './hunts-config.js';
+import { displayHuntView } from './views/hunt-view.js';
+import { displayErrorView } from './views/error-view.js';
 
-let config: Config | null = null;
+let huntsConfig: HuntsConfig | null = null;
 let currentHunt: Hunt | null = null;
 
 /**
@@ -65,20 +68,23 @@ function adjustBrightness(color: string, percent: number): string {
 }
 
 /**
- * Load hunts configuration from JSON file
+ * Load hunts configuration
  */
-async function loadConfig(): Promise<void> {
+async function loadHunts(): Promise<void> {
   try {
-    const response = await fetch('./hunts.json');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    config = await response.json();
-    if (!config) {
+    huntsConfig = await getHuntsConfig();
+    if (!huntsConfig) {
       throw new Error('Configuration is null or undefined');
     }
 
-    currentHunt = config.hunts[0]; // Assuming the first hunt is the active one
+    const currentHuntNumber = await getCurrentHuntNumber();
+
+    // If no current hunt is set: take the first hunt as default
+    currentHunt = 
+      currentHuntNumber !== null
+      ? huntsConfig.hunts.find(h => h.huntNumber === currentHuntNumber) ?? huntsConfig.hunts[0]
+      : huntsConfig.hunts[0];
+
     updateHuntTitle();
     applyThemeColor(currentHunt.themeColor);
     renderUnlockedClues();
@@ -94,10 +100,11 @@ async function loadConfig(): Promise<void> {
  * @returns 
  */
 function switchHunt(huntId: number): void {
-  if (!config) return;
+  if (!huntsConfig) return;
 
-  const hunt = config.hunts.find(h => h.huntNumber === huntId);
+  const hunt = huntsConfig.hunts.find(h => h.huntNumber === huntId);
   if (hunt) {
+    setCurrentHuntNumber(hunt.huntNumber);
     currentHunt = hunt;
     updateHuntTitle();
     applyThemeColor(hunt.themeColor);
@@ -295,14 +302,14 @@ function closeSidePanel(): void {
  * Render hunts in the side panel
  */
 function renderHuntsInPanel(): void {
-  if (!config) return;
+  if (!huntsConfig) return;
   
   const huntsList = document.getElementById('hunts-list');
   if (!huntsList) return;
   
   huntsList.innerHTML = '';
   
-  config.hunts.forEach(hunt => {
+  huntsConfig.hunts.forEach(hunt => {
     const huntItem = document.createElement('button');
     huntItem.className = 'hunt-item';
     if (currentHunt?.huntNumber === hunt.huntNumber) {
@@ -319,9 +326,18 @@ function renderHuntsInPanel(): void {
  * Initialize the application
  */
 async function init(): Promise<void> {
-  // Load configuration
-  await loadConfig();
-  
+  // Load hunts configuration
+  await loadHunts();
+
+  // Check if a hunt was successfully resolved
+  if (!currentHunt) {
+    displayErrorView('Aucun parcours n\'a pu être chargé');
+    return;
+  }
+
+  // Display hunt view
+  displayHuntView();
+
   // Render hunts in the side panel
   renderHuntsInPanel();
   

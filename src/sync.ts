@@ -1,36 +1,14 @@
 import { UnlockedClue } from './types.js';
 import { getUnlockedClues, getUnsyncedClues, markCluesAsSynced, getLastSyncTimestamp, setLastSyncTimestamp } from './storage.js';
+import { config } from './config.js';
 
 let syncIntervalId: number | null = null;
 let syncInProgress = false;
-let apiEndpoint: string;
-let syncIntervalSeconds: number;
-let fullResyncMinutes: number;
-
-/**
- * Load configuration from config.json
- */
-async function loadConfig(): Promise<void> {
-  try {
-    const response = await fetch('./config.json');
-    if (response.ok) {
-      const config = await response.json();
-      apiEndpoint = config.apiEndpoint as string;
-      syncIntervalSeconds = config.syncIntervalSeconds as number;
-      fullResyncMinutes = config.fullResyncMinutes as number;
-    }
-  } catch (error) {
-    console.warn('Failed to load config.json, using defaults:', error);
-  }
-}
 
 /**
  * Start background sync with periodic retry
  */
 export async function startBackgroundSync(): Promise<void> {
-  // Load config first
-  await loadConfig();
-  
   // Clear any existing interval
   if (syncIntervalId !== null) {
     stopBackgroundSync();
@@ -42,12 +20,12 @@ export async function startBackgroundSync(): Promise<void> {
   // Then start periodic sync
   syncIntervalId = window.setInterval(() => {
     attemptSync();
-  }, syncIntervalSeconds * 1000);
+  }, config.syncIntervalSeconds * 1000);
   
   // Cleanup on page unload
   window.addEventListener('beforeunload', stopBackgroundSync);
   
-  console.log(`Background sync started (interval: ${syncIntervalSeconds}s, full resync: ${fullResyncMinutes}min)`);
+  console.log(`Background sync started (interval: ${config.syncIntervalSeconds}s, full resync: ${config.fullResyncMinutes}min)`);
 }
 
 /**
@@ -75,7 +53,7 @@ async function attemptSync(): Promise<void> {
     console.log('Sync already in progress, skipping...');
     return;
   }
-  
+
   try {
     syncInProgress = true;
     
@@ -100,7 +78,7 @@ async function attemptSync(): Promise<void> {
     const codesBeingSynced = cluesToSync.map(c => c.code);
     
     // Send to server
-    const response = await fetch(apiEndpoint, {
+    const response = await fetch(config.apiEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -121,11 +99,11 @@ async function attemptSync(): Promise<void> {
       setLastSyncTimestamp(new Date().toISOString());
       console.log(`✅ Sync successful (${codesBeingSynced.length} clue(s))`);
     } else {
-      console.warn(`Sync failed with status ${response.status}, will retry in ${syncIntervalSeconds}s`);
+      console.warn(`Sync failed with status ${response.status}, will retry in ${config.syncIntervalSeconds}s`);
     }
   } catch (error) {
     // Silent failure - will retry on next interval
-    console.warn(`Sync error (will retry in ${syncIntervalSeconds}s):`, error);
+    console.warn(`Sync error (will retry in ${config.syncIntervalSeconds}s):`, error);
   } finally {
     syncInProgress = false;
   }
@@ -139,10 +117,10 @@ function shouldPerformFullResync(lastSyncTimestamp: string | null): boolean {
     // Never synced before
     return false;
   }
-  
+
   const lastSync = new Date(lastSyncTimestamp);
   const now = new Date();
   const minutesSinceLastSync = (now.getTime() - lastSync.getTime()) / (1000 * 60);
   
-  return minutesSinceLastSync > fullResyncMinutes;
+  return minutesSinceLastSync > config.fullResyncMinutes;
 }
