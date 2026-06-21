@@ -1,5 +1,5 @@
-export function getHuntView(): string {
-  return `
+export function displayHuntView() {
+  const htmlContent = `
     <!-- Burger Menu Button -->
     <button id="burger-menu" class="burger-menu" aria-label="Ouvrir le menu">
       <span></span>
@@ -55,4 +55,6 @@ export function getHuntView(): string {
       </section>
     </main>
   `;
+
+  document.getElementById('app')!.innerHTML = htmlContent;
 }

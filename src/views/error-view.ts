@@ -1,5 +1,5 @@
-export function getErrorView(message: string): string {
-  return `
+export function displayErrorView(message: string) {
+  const htmlContent = `
     <header class="error-header">
       <h1>Erreur</h1>
     </header>
@@ -7,4 +7,6 @@ export function getErrorView(message: string): string {
       <p>${message}</p>
     </main>
   `;
+
+  document.getElementById('app')!.innerHTML = htmlContent;
 }
