@@ -320,10 +320,9 @@ async function init(): Promise<void> {
     return;
   }
 
-  switchHunt(currentHunt.huntNumber);
-
   // Display hunt view
   displayHuntView();
+  switchHunt(currentHunt.huntNumber);
 
   // Render hunts in the side panel
   renderHuntsInPanel();
