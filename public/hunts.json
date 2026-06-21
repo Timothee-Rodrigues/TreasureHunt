@@ -6,22 +6,27 @@
       "huntTitle": "Parcours facile",
       "clues": [
         {
+          "sequenceNumber": 1,
           "code": "A3X7Q",
           "clue": "Regardez sous le vieux chêne près du ruisseau"
         },
         {
+          "sequenceNumber": 2,
           "code": "B7K2M",
           "clue": "Suivez le sentier vers le nord jusqu'au panneau rouge"
         },
         {
+          "sequenceNumber": 3,
           "code": "C9P4N",
           "clue": "L'indice suivant est caché dans la bûche creuse"
         },
         {
+          "sequenceNumber": 4,
           "code": "D1W8R",
           "clue": "Cherchez près du pont de pierre sur le sentier est"
         },
         {
+          "sequenceNumber": 5,
           "code": "E5T6Y",
           "clue": "Félicitations ! Vous avez trouvé l'emplacement final du trésor !"
         }
@@ -33,6 +38,7 @@
       "huntTitle": "Parcours difficile",
       "clues": [
         {
+          "sequenceNumber": 1,
           "code": "Z2L9V",
           "clue": "Allez à la fontaine au centre du village et cherchez sous la pierre gravée"
         }

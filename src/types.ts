@@ -2,6 +2,7 @@
  * Clue data structure from configuration file
  */
 export interface Clue {
+  sequenceNumber: number;
   code: string;
   clue: string;
 }
