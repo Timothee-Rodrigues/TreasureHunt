@@ -3,9 +3,9 @@ import { getUnlockedClues, getUnsyncedClues, markCluesAsSynced, getLastSyncTimes
 
 let syncIntervalId: number | null = null;
 let syncInProgress = false;
-let apiEndpoint = 'https://example.com/api/unlock';
-let syncIntervalSeconds = 20;
-let fullResyncMinutes = 5;
+let apiEndpoint: string;
+let syncIntervalSeconds: number;
+let fullResyncMinutes: number;
 
 /**
  * Load configuration from config.json
@@ -15,9 +15,9 @@ async function loadConfig(): Promise<void> {
     const response = await fetch('./config.json');
     if (response.ok) {
       const config = await response.json();
-      apiEndpoint = config.apiEndpoint || apiEndpoint;
-      syncIntervalSeconds = config.syncIntervalSeconds || syncIntervalSeconds;
-      fullResyncMinutes = config.fullResyncMinutes || fullResyncMinutes;
+      apiEndpoint = config.apiEndpoint as string;
+      syncIntervalSeconds = config.syncIntervalSeconds as number;
+      fullResyncMinutes = config.fullResyncMinutes as number;
     }
   } catch (error) {
     console.warn('Failed to load config.json, using defaults:', error);

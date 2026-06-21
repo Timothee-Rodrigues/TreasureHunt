@@ -1,5 +1,5 @@
 {
-  "apiEndpoint": "https://example.com/api/unlock",
+  "apiEndpoint": "https://treasurehuntserver.onrender.com",
   "syncIntervalSeconds": 20,
   "fullResyncMinutes": 5
 }
