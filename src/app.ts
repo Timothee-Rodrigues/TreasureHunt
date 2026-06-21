@@ -1,9 +1,9 @@
-import { Config, Clue, Hunt } from './types.js';
+import { HuntsConfig, Clue, Hunt } from './types.js';
 import { getUnlockedClues, saveUnlockedClue, isClueUnlocked } from './storage.js';
 import { getCurrentPosition } from './geolocation.js';
 import { startBackgroundSync } from './sync.js';
 
-let config: Config | null = null;
+let huntsConfig: HuntsConfig | null = null;
 let currentHunt: Hunt | null = null;
 
 /**
@@ -73,12 +73,12 @@ async function loadConfig(): Promise<void> {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    config = await response.json();
-    if (!config) {
+    huntsConfig = await response.json();
+    if (!huntsConfig) {
       throw new Error('Configuration is null or undefined');
     }
 
-    currentHunt = config.hunts[0]; // Assuming the first hunt is the active one
+    currentHunt = huntsConfig.hunts[0]; // Assuming the first hunt is the active one
     updateHuntTitle();
     applyThemeColor(currentHunt.themeColor);
     renderUnlockedClues();
@@ -94,9 +94,9 @@ async function loadConfig(): Promise<void> {
  * @returns 
  */
 function switchHunt(huntId: number): void {
-  if (!config) return;
+  if (!huntsConfig) return;
 
-  const hunt = config.hunts.find(h => h.huntNumber === huntId);
+  const hunt = huntsConfig.hunts.find(h => h.huntNumber === huntId);
   if (hunt) {
     currentHunt = hunt;
     updateHuntTitle();
@@ -295,14 +295,14 @@ function closeSidePanel(): void {
  * Render hunts in the side panel
  */
 function renderHuntsInPanel(): void {
-  if (!config) return;
+  if (!huntsConfig) return;
   
   const huntsList = document.getElementById('hunts-list');
   if (!huntsList) return;
   
   huntsList.innerHTML = '';
   
-  config.hunts.forEach(hunt => {
+  huntsConfig.hunts.forEach(hunt => {
     const huntItem = document.createElement('button');
     huntItem.className = 'hunt-item';
     if (currentHunt?.huntNumber === hunt.huntNumber) {

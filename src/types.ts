@@ -17,7 +17,8 @@ export interface Hunt {
   clues: Clue[];
 }
 
-export interface Config {
+export interface HuntsConfig {
+  version: string;
   hunts: Hunt[];
 }
 
