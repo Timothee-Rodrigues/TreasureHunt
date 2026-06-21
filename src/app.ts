@@ -68,33 +68,6 @@ function adjustBrightness(color: string, percent: number): string {
 }
 
 /**
- * Load hunts configuration
- */
-async function loadHunts(): Promise<void> {
-  try {
-    huntsConfig = await getHuntsConfig();
-    if (!huntsConfig) {
-      throw new Error('Configuration is null or undefined');
-    }
-
-    const currentHuntNumber = await getCurrentHuntNumber();
-
-    // If no current hunt is set: take the first hunt as default
-    currentHunt = 
-      currentHuntNumber !== null
-      ? huntsConfig.hunts.find(h => h.huntNumber === currentHuntNumber) ?? huntsConfig.hunts[0]
-      : huntsConfig.hunts[0];
-
-    updateHuntTitle();
-    applyThemeColor(currentHunt.themeColor);
-    renderUnlockedClues();
-  } catch (error) {
-    console.error('Error loading hunts configuration:', error);
-    showError('Failed to load treasure hunt data. Please refresh the page.');
-  }
-}
-
-/**
  * Switch to a different hunt
  * @param huntId 
  * @returns 
@@ -327,13 +300,27 @@ function renderHuntsInPanel(): void {
  */
 async function init(): Promise<void> {
   // Load hunts configuration
-  await loadHunts();
+  huntsConfig = await getHuntsConfig();
+  if (!huntsConfig) {
+    displayErrorView('Impossible de charger la configuration de l\'application. C\'est pas bon du tout... Va voir avec Tim 😊');
+    return;
+  }
+
+  const currentHuntNumber = await getCurrentHuntNumber();
+
+  // If no current hunt is set: take the first hunt as default
+  currentHunt = 
+    currentHuntNumber !== null
+    ? huntsConfig.hunts.find(h => h.huntNumber === currentHuntNumber) ?? huntsConfig.hunts[0]
+    : huntsConfig.hunts[0];
 
   // Check if a hunt was successfully resolved
   if (!currentHunt) {
-    displayErrorView('Aucun parcours n\'a pu être chargé');
+    displayErrorView('Aucun parcours n\'a pu être chargé... En gros: Va voir avec Tim 😊');
     return;
   }
+
+  switchHunt(currentHunt.huntNumber);
 
   // Display hunt view
   displayHuntView();
