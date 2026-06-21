@@ -42,6 +42,8 @@ jobs:
           ls -R
           echo "PUBLIC:"
           ls -R ./public
+          echo "PUBLIC DIST:"
+          ls -R ./public/dist
 
       - name: Deploy
         id: deployment
