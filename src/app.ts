@@ -3,6 +3,8 @@ import { getUnlockedClues, saveUnlockedClue, isClueUnlocked } from './storage.js
 import { getCurrentPosition } from './geolocation.js';
 import { startBackgroundSync } from './sync.js';
 import { getCurrentHuntNumber, getHuntsConfig, setCurrentHuntNumber } from './hunts-config.js';
+import { displayHuntView } from './views/hunt-view.js';
+import { displayErrorView } from './views/error-view.js';
 
 let huntsConfig: HuntsConfig | null = null;
 let currentHunt: Hunt | null = null;
@@ -326,6 +328,15 @@ function renderHuntsInPanel(): void {
 async function init(): Promise<void> {
   // Load hunts configuration
   await loadHunts();
+
+  // Check if a hunt was successfully resolved
+  if (!currentHunt) {
+    displayErrorView('Aucun parcours n\'a pu être chargé');
+    return;
+  }
+
+  // Display hunt view
+  displayHuntView();
 
   // Render hunts in the side panel
   renderHuntsInPanel();
