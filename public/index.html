@@ -18,34 +18,9 @@
   <div class="container">
     <div id="app">
       <!-- The app will be rendered here -->
-    </div>  
-    <footer>
-      <p class="offline-indicator">
-        <span id="offline-status">📶 Online</span>
-      </p>
-    </footer>
+    </div>
   </div>
   
   <script type="module" src="./dist/app.js"></script>
-  
-  <script>
-    // Simple offline indicator
-    function updateOnlineStatus() {
-      const status = document.getElementById('offline-status');
-      if (status) {
-        if (navigator.onLine) {
-          status.textContent = '📶 En ligne';
-          status.className = 'online';
-        } else {
-          status.textContent = '📴 Hors ligne';
-          status.className = 'offline';
-        }
-      }
-    }
-    
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    updateOnlineStatus();
-  </script>
 </body>
 </html>
