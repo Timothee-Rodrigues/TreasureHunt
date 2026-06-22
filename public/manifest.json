@@ -1,11 +1,11 @@
 {
-  "name": "Treasure Hunt",
-  "short_name": "TreasureHunt",
-  "description": "Offline-first treasure hunt app for discovering clues",
+  "name": "Chasse au trésor",
+  "short_name": "Chasse au trésor",
+  "description": "Une application de chasse au trésor pouvant être utilisée en mode hors ligne.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#667eea",
+  "background_color": "#ffffff",
   "theme_color": "#4CAF50",
   "orientation": "portrait",
   "icons": [
