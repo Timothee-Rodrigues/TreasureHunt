@@ -66,6 +66,11 @@ self.addEventListener('activate', (event) => {
  * Fetch event - serve from cache first, fallback to network
  */
 self.addEventListener('fetch', (event) => {
+  // Skip caching for non-HTTP(S) requests (e.g., file://)
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
