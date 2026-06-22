@@ -5,6 +5,8 @@ import { startBackgroundSync } from './sync.js';
 import { getCurrentHuntNumber, getHuntsConfig, setCurrentHuntNumber } from './hunts-config.js';
 import { displayHuntView } from './views/hunt-view.js';
 import { displayErrorView } from './views/error-view.js';
+import { displayUpdateView } from './views/update-view.js';
+import { startBackgroundVersionCheck } from './version-check.js';
 
 let huntsConfig: HuntsConfig | null = null;
 let currentHunt: Hunt | null = null;
@@ -297,15 +299,25 @@ function renderHuntsInPanel(): void {
 
 /**
  * Initialize the application
+ * @param isHuntsConfigUpToDate - If true, skip version checking and use stored config
  */
-async function init(): Promise<void> {
+export async function init(isHuntsConfigUpToDate: boolean = false): Promise<void> {
   // Load hunts configuration
   huntsConfig = await getHuntsConfig();
+  
+  // If no cached hunts config, display update view to fetch from server
   if (!huntsConfig) {
-    displayErrorView('Impossible de charger la configuration de l\'application. C\'est pas bon du tout... Va voir avec Tim 😊');
+    displayUpdateView();
     return;
   }
-
+  
+  // If we have a cached config but it's not marked as up-to-date,
+  // start a background check to see if the version on the server has changed
+  // This doesn't block the UI - if an update is available, we'll show it in the background
+  if (!isHuntsConfigUpToDate) {
+    startBackgroundVersionCheck();
+  }
+  
   const currentHuntNumber = await getCurrentHuntNumber();
 
   // If no current hunt is set: take the first hunt as default
@@ -371,7 +383,7 @@ async function init(): Promise<void> {
 
 // Start the app when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => init());
 } else {
   init();
 }
