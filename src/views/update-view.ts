@@ -1,4 +1,4 @@
-import { getHuntsConfig } from '../hunts-config.js';
+import { getHuntsConfig, refreshHuntsConfig } from '../hunts-config.js';
 import { init } from '../app.js';
 
 export async function displayUpdateView(): Promise<void> {
@@ -25,6 +25,7 @@ export async function displayUpdateView(): Promise<void> {
 
   // Start loading hunts config from server
   try {
+    await refreshHuntsConfig();
     const huntsConfig = await getHuntsConfig();
     if (huntsConfig) {
       // Calculate how much time has elapsed

@@ -6,7 +6,6 @@ const huntsConfigVersionKey = 'huntsConfigVersion';
 const currentHuntKey = 'currentHunt';
 
 export async function getHuntsConfig(): Promise<HuntsConfig | null> {
-  await loadHuntsConfig();
   const cachedConfig = localStorage.getItem(huntsConfigKey);
   return cachedConfig ? JSON.parse(cachedConfig) as HuntsConfig : null;
 }
@@ -21,11 +20,11 @@ export async function setCurrentHuntNumber(huntNumber: number): Promise<void> {
 }
 
 /**
- * Load hunts configuration from localStorage or server
+ * Refresh hunts configuration from localStorage or server
  * 
- * Returns true if the config changed.
+ * @returns true if the config changed.
  */
-async function loadHuntsConfig(): Promise<boolean> {
+export async function refreshHuntsConfig(): Promise<boolean> {
   try {
     // Step 1: Check if there is any huntsConfig in localStorage
     const cachedConfig = localStorage.getItem(huntsConfigKey);
