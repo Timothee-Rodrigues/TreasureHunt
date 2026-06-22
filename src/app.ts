@@ -307,7 +307,7 @@ export async function init(isHuntsConfigUpToDate: boolean = false): Promise<void
   
   // If no cached hunts config, display update view to fetch from server
   if (!huntsConfig) {
-    displayUpdateView();
+    await displayUpdateView();
     return;
   }
   
@@ -383,7 +383,13 @@ export async function init(isHuntsConfigUpToDate: boolean = false): Promise<void
 
 // Start the app when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => init());
+  document.addEventListener('DOMContentLoaded', () => init().catch(error => {
+    console.error('Failed to initialize app:', error);
+    displayErrorView('Une erreur est survenue lors du démarrage de l\'application.');
+  }));
 } else {
-  init();
+  init().catch(error => {
+    console.error('Failed to initialize app:', error);
+    displayErrorView('Une erreur est survenue lors du démarrage de l\'application.');
+  });
 }

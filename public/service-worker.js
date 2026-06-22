@@ -25,14 +25,18 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('Service Worker: Caching assets');
-        return cache.addAll(ASSETS);
+        // Try to cache all assets, but don't fail if we're running locally (file://)
+        return cache.addAll(ASSETS).catch((error) => {
+          console.warn('Service Worker: Could not cache all assets (may be running locally):', error);
+          // Continue anyway - the app can still work offline with localStorage
+        });
       })
       .then(() => {
         console.log('Service Worker: Installed successfully');
         return self.skipWaiting(); // Activate immediately
       })
       .catch((error) => {
-        console.error('Service Worker: Cache failed', error);
+        console.error('Service Worker: Installation error:', error);
       })
   );
 });
