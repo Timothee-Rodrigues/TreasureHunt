@@ -436,26 +436,7 @@ main {
 
 /* Footer */
 footer {
-  padding: 1rem 1.5rem;
-  background: #f5f5f5;
-  text-align: center;
-  border-top: 1px solid #e0e0e0;
-  flex-shrink: 0;
-}
-
-.offline-indicator {
-  font-size: 0.875rem;
-  color: #666;
-}
-
-.offline-indicator .online {
-  color: #555555;
-  font-weight: 600;
-}
-
-.offline-indicator .offline {
-  color: #999999;
-  font-weight: 600;
+  display: none;
 }
 
 /* Accessibility */
