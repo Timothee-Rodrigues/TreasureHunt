@@ -52,7 +52,25 @@ export async function displayUpdateView(): Promise<void> {
     }
   } catch (error) {
     console.error('Error loading hunts config:', error);
-    const { displayErrorView } = await import('./error-view.js');
-    displayErrorView('Impossible de charger la configuration de l\'application. C\'est pas bon du tout... Va voir avec Tim 😊');
+    
+    // Display error with retry button
+    const appContainer = document.getElementById('app')!;
+    appContainer.innerHTML = `
+      <div class="update-container">
+        <div class="update-content">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+          <p class="update-message">Oups, pas de connexion internet 📡</p>
+          <p style="font-size: 0.9rem; color: #666; margin: 1rem 0;">Je peux pas mettre à jour pour le moment...</p>
+          <button id="retry-btn" style="margin-top: 1.5rem; padding: 0.75rem 1.5rem; font-size: 1rem; background: #007AFF; color: white; border: none; border-radius: 8px; cursor: pointer;">
+            Essayer à nouveau
+          </button>
+        </div>
+      </div>
+    `;
+    
+    // Add retry functionality
+    document.getElementById('retry-btn')?.addEventListener('click', () => {
+      displayUpdateView();
+    });
   }
 }
