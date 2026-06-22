@@ -5,9 +5,34 @@ import { startBackgroundSync } from './sync.js';
 import { getCurrentHuntNumber, getHuntsConfig, setCurrentHuntNumber } from './hunts-config.js';
 import { displayHuntView } from './views/hunt-view.js';
 import { displayErrorView } from './views/error-view.js';
+import { displayUpdateView } from './views/update-view.js';
+import { config } from './config.js';
 
 let huntsConfig: HuntsConfig | null = null;
 let currentHunt: Hunt | null = null;
+
+/**
+ * Check if hunts config version has changed on the server
+ * Returns true if an update is needed
+ */
+async function checkHuntsConfigVersion(): Promise<boolean> {
+  try {
+    const infoResponse = await fetch(`${config.apiEndpoint}/info`);
+    if (infoResponse.ok) {
+      const infoData = await infoResponse.json() as { version: string };
+      const remoteVersion = infoData.version;
+      
+      const cachedVersion = localStorage.getItem('huntsConfigVersion');
+      
+      // If we don't have a cached version or it's different from remote, we need to update
+      return cachedVersion !== remoteVersion;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error checking hunts config version:', error);
+    return false;
+  }
+}
 
 /**
  * Apply theme color to the UI
@@ -297,15 +322,30 @@ function renderHuntsInPanel(): void {
 
 /**
  * Initialize the application
+ * @param isHuntsConfigUpToDate - If true, skip version checking and use stored config
  */
-async function init(): Promise<void> {
+export async function init(isHuntsConfigUpToDate: boolean = false): Promise<void> {
   // Load hunts configuration
   huntsConfig = await getHuntsConfig();
+  
+  // If no cached hunts config, display update view to fetch from server
   if (!huntsConfig) {
-    displayErrorView('Impossible de charger la configuration de l\'application. C\'est pas bon du tout... Va voir avec Tim 😊');
+    displayUpdateView();
     return;
   }
-
+  
+  // If we have a cached config but it's not marked as up-to-date,
+  // check if the version on the server has changed
+  if (!isHuntsConfigUpToDate) {
+    // TODO: Actually, we need to start a background check that is not blocking.
+    // It must be done in background so that if there is no internet connexion, it does not block the UI.
+    const updateNeeded = await checkHuntsConfigVersion();
+    if (updateNeeded) {
+      displayUpdateView();
+      return;
+    }
+  }
+  
   const currentHuntNumber = await getCurrentHuntNumber();
 
   // If no current hunt is set: take the first hunt as default
