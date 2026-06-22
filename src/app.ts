@@ -6,33 +6,10 @@ import { getCurrentHuntNumber, getHuntsConfig, setCurrentHuntNumber } from './hu
 import { displayHuntView } from './views/hunt-view.js';
 import { displayErrorView } from './views/error-view.js';
 import { displayUpdateView } from './views/update-view.js';
-import { config } from './config.js';
+import { startBackgroundVersionCheck } from './version-check.js';
 
 let huntsConfig: HuntsConfig | null = null;
 let currentHunt: Hunt | null = null;
-
-/**
- * Check if hunts config version has changed on the server
- * Returns true if an update is needed
- */
-async function checkHuntsConfigVersion(): Promise<boolean> {
-  try {
-    const infoResponse = await fetch(`${config.apiEndpoint}/info`);
-    if (infoResponse.ok) {
-      const infoData = await infoResponse.json() as { version: string };
-      const remoteVersion = infoData.version;
-      
-      const cachedVersion = localStorage.getItem('huntsConfigVersion');
-      
-      // If we don't have a cached version or it's different from remote, we need to update
-      return cachedVersion !== remoteVersion;
-    }
-    return false;
-  } catch (error) {
-    console.error('Error checking hunts config version:', error);
-    return false;
-  }
-}
 
 /**
  * Apply theme color to the UI
@@ -335,15 +312,10 @@ export async function init(isHuntsConfigUpToDate: boolean = false): Promise<void
   }
   
   // If we have a cached config but it's not marked as up-to-date,
-  // check if the version on the server has changed
+  // start a background check to see if the version on the server has changed
+  // This doesn't block the UI - if an update is available, we'll show it in the background
   if (!isHuntsConfigUpToDate) {
-    // TODO: Actually, we need to start a background check that is not blocking.
-    // It must be done in background so that if there is no internet connexion, it does not block the UI.
-    const updateNeeded = await checkHuntsConfigVersion();
-    if (updateNeeded) {
-      displayUpdateView();
-      return;
-    }
+    startBackgroundVersionCheck();
   }
   
   const currentHuntNumber = await getCurrentHuntNumber();
@@ -411,7 +383,7 @@ export async function init(isHuntsConfigUpToDate: boolean = false): Promise<void
 
 // Start the app when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => init());
 } else {
   init();
 }
