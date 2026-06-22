@@ -25,16 +25,17 @@ export function getUnlockedClues(): UnlockedClue[] {
  * 
  * Note: Only stores code, timestamp, and GPS. Clue text is looked up from config.
  */
-export function saveUnlockedClue(code: string, gpsCoordinates?: GpsCoordinates | null): void {
+export function saveUnlockedClue(code: string, huntNumber: number, gpsCoordinates?: GpsCoordinates | null): void {
   try {
     const unlockedClues = getUnlockedClues();
     
-    // Check if already unlocked
-    if (unlockedClues.some(c => c.code.toUpperCase() === code.toUpperCase())) {
+    // Check if already unlocked in this hunt
+    if (unlockedClues.some(c => c.code.toUpperCase() === code.toUpperCase() && c.huntNumber === huntNumber)) {
       return; // Already unlocked, don't duplicate
     }
     
     const newClue: UnlockedClue = {
+      huntNumber,
       code: code.toUpperCase(),
       unlockedAt: new Date().toISOString(),
       gpsCoordinates: gpsCoordinates ?? null,

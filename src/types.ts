@@ -36,6 +36,7 @@ export interface GpsCoordinates {
  * Note: Clue text is not stored - it's looked up from config by code
  */
 export interface UnlockedClue {
+  huntNumber: number; // Hunt this clue belongs to
   code: string;
   unlockedAt: string; // ISO 8601 timestamp
   gpsCoordinates?: GpsCoordinates | null; // Optional GPS location when unlocked

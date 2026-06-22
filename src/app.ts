@@ -130,9 +130,9 @@ async function handleCodeSubmit(event: Event): Promise<void> {
   
   const clue = findClueByCode(code);
   
-  if (clue) {
+  if (clue && currentHunt) {
     // Save
-    saveUnlockedClue(clue.code);
+    saveUnlockedClue(clue.code, currentHunt.huntNumber);
     showSuccess(clue.description);
     renderUnlockedClues();
     input.value = ''; // Clear input
@@ -184,18 +184,21 @@ function renderUnlockedClues(): void {
   const unlockedClues = getUnlockedClues();
   const container = document.getElementById('unlocked-clues');
   
-  if (!container) return;
+  if (!container || !currentHunt) return;
   
   // Clear container
   container.innerHTML = '';
   
-  if (unlockedClues.length === 0) {
+  // Filter clues by current hunt number
+  const currentHuntUnlockedClues = unlockedClues.filter(c => c.huntNumber === currentHunt!.huntNumber);
+  
+  if (currentHuntUnlockedClues.length === 0) {
     container.innerHTML = '<p class="no-clues">Aucun indice débloqué pour l\'instant. Entrez un code pour commencer !</p>';
     return;
   }
   
   // Render each unlocked clue
-  unlockedClues.forEach((unlockedClue, index) => {
+  currentHuntUnlockedClues.forEach((unlockedClue, index) => {
     const clueElement = document.createElement('div');
     clueElement.className = 'unlocked-clue';
     
