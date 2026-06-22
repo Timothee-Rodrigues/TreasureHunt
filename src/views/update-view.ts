@@ -2,6 +2,12 @@ import { getHuntsConfig } from '../hunts-config.js';
 import { init } from '../app.js';
 
 export async function displayUpdateView(): Promise<void> {
+  const appElement = document.getElementById('app');
+  if (!appElement) {
+    console.error('App container not found');
+    return;
+  }
+
   const htmlContent = `
     <div class="update-container">
       <div class="update-content">
@@ -11,7 +17,7 @@ export async function displayUpdateView(): Promise<void> {
     </div>
   `;
 
-  document.getElementById('app')!.innerHTML = htmlContent;
+  appElement.innerHTML = htmlContent;
 
   // Ensure minimum display times
   const viewStartTime = Date.now();
@@ -31,8 +37,7 @@ export async function displayUpdateView(): Promise<void> {
       }
 
       // Show check mark
-      const appContainer = document.getElementById('app')!;
-      appContainer.innerHTML = `
+      appElement.innerHTML = `
         <div class="update-container">
           <div class="update-content">
             <div class="checkmark">✓</div>
@@ -51,8 +56,45 @@ export async function displayUpdateView(): Promise<void> {
       throw new Error('Failed to load hunts config');
     }
   } catch (error) {
-    console.error('Error loading hunts config:', error);
-    const { displayErrorView } = await import('./error-view.js');
-    displayErrorView('Impossible de charger la configuration de l\'application. C\'est pas bon du tout... Va voir avec Tim 😊');
+    console.error('Error in displayUpdateView:', error);
+    
+    // Display error with retry button
+    appElement.innerHTML = `
+      <div class="update-container">
+        <div class="update-content">
+          <div style="font-size: 3rem; margin-bottom: 1rem; line-height: 1;">⚠️</div>
+          <p class="update-message" style="font-size: 1.1rem; font-weight: 600;">Oups, pas de connexion internet 📡</p>
+          <p style="font-size: 0.95rem; color: #999; margin: 0.5rem 0 1.5rem 0; max-width: 300px;">Je peux pas mettre à jour pour le moment...</p>
+          <button id="retry-btn" style="
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+          ">
+            Essayer à nouveau
+          </button>
+        </div>
+      </div>
+    `;
+    
+    // Add retry functionality
+    const retryBtn = document.getElementById('retry-btn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        displayUpdateView();
+      });
+      // Visual feedback on button click
+      retryBtn.addEventListener('mousedown', () => {
+        retryBtn.style.opacity = '0.7';
+      });
+      retryBtn.addEventListener('mouseup', () => {
+        retryBtn.style.opacity = '1';
+      });
+    }
   }
 }
