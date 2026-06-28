@@ -138,11 +138,42 @@ async function handleCodeSubmit(event: Event): Promise<void> {
     showSuccess(clue.description);
     renderUnlockedClues();
     input.value = ''; // Clear input
+
+    if (clue.imageName) {
+      showClueImageModal(clue.imageName, clue.description);
+    }
   } else {
     // Invalid code
     showError('Code invalide');
     input.value = ''; // Clear input
   }
+}
+
+/**
+ * Show the image popup for a clue
+ */
+function showClueImageModal(imageName: string, description: string): void {
+  const modal = document.getElementById('clue-image-modal') as HTMLElement | null;
+  const image = document.getElementById('clue-image') as HTMLImageElement | null;
+  if (!modal || !image) return;
+
+  image.src = `./images/${encodeURIComponent(imageName)}`;
+  image.alt = `Image de l'indice débloqué : ${description}`;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Close the image popup
+ */
+function closeClueImageModal(): void {
+  const modal = document.getElementById('clue-image-modal') as HTMLElement | null;
+  const image = document.getElementById('clue-image') as HTMLImageElement | null;
+  if (!modal || !image) return;
+
+  modal.hidden = true;
+  image.src = '';
+  document.body.style.overflow = '';
 }
 
 /**
@@ -356,6 +387,19 @@ export async function init(isHuntsConfigUpToDate: boolean = false): Promise<void
   if (overlay) {
     overlay.addEventListener('click', closeSidePanel);
   }
+
+  // Close image modal when clicking close button
+  const closeModalButton = document.getElementById('clue-image-close');
+  if (closeModalButton) {
+    closeModalButton.addEventListener('click', closeClueImageModal);
+  }
+
+  // Close image modal on Escape key
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closeClueImageModal();
+    }
+  });
   
   // Add click animation to button
   const submitButton = document.querySelector('.btn-primary') as HTMLButtonElement;

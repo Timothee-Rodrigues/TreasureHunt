@@ -54,6 +54,14 @@ export function displayHuntView() {
         </div>
       </section>
     </main>
+
+    <!-- Clue Image Modal -->
+    <div id="clue-image-modal" class="clue-image-modal" hidden>
+      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Image de l'indice débloqué">
+        <button id="clue-image-close" class="modal-close" aria-label="Fermer le popup">×</button>
+        <img id="clue-image" src="" alt="Image de l'indice débloqué">
+      </div>
+    </div>
   `;
 
   document.getElementById('app')!.innerHTML = htmlContent;

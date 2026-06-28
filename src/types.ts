@@ -5,6 +5,7 @@ export interface Clue {
   sequenceNumber: number;
   code: string;
   description: string;
+  imageName?: string;
 }
 
 /**

@@ -470,6 +470,66 @@ footer {
   border: 0;
 }
 
+/* Clue Image Modal */
+.clue-image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 1.5rem;
+}
+
+.clue-image-modal[hidden] {
+  display: none;
+}
+
+.modal-content {
+  position: relative;
+  width: min(100%, 980px);
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #222;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close:hover {
+  background: white;
+}
+
+.modal-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 4rem);
+  object-fit: contain;
+  background: #000;
+}
+
 /* Responsive Design */
 @media (max-width: 480px) {
   h1 {
