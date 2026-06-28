@@ -530,6 +530,50 @@ footer {
   background: #000;
 }
 
+.modal-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-height: calc(100vh - 4rem);
+  overflow: hidden;
+}
+
+.modal-image-wrapper {
+  width: 100%;
+  max-height: 60vh;
+  overflow: hidden;
+  background: #000;
+}
+
+.modal-clue-details {
+  padding: 1.5rem;
+  background: white;
+  color: #2C2C2C;
+  overflow-y: auto;
+  max-height: calc(100vh - 4rem - 2rem);
+}
+
+.modal-header {
+  margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.clue-modal-code {
+  color: #2C2C2C;
+  font-weight: 600;
+}
+
+.clue-modal-description {
+  color: #3a3a3a;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 480px) {
   h1 {

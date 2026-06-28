@@ -135,13 +135,10 @@ async function handleCodeSubmit(event: Event): Promise<void> {
   if (clue && currentHunt) {
     // Save
     saveUnlockedClue(clue.code, currentHunt.huntNumber);
-    showSuccess(clue.description);
     renderUnlockedClues();
     input.value = ''; // Clear input
 
-    if (clue.imageName) {
-      showClueImageModal(clue.imageName, clue.description);
-    }
+    showClueImageModal(clue, currentHunt);
   } else {
     // Invalid code
     showError('Code invalide');
@@ -152,13 +149,29 @@ async function handleCodeSubmit(event: Event): Promise<void> {
 /**
  * Show the image popup for a clue
  */
-function showClueImageModal(imageName: string, description: string): void {
+function showClueImageModal(clue: Clue, hunt: Hunt): void {
   const modal = document.getElementById('clue-image-modal') as HTMLElement | null;
+  const imageWrapper = document.querySelector('.modal-image-wrapper') as HTMLElement | null;
   const image = document.getElementById('clue-image') as HTMLImageElement | null;
-  if (!modal || !image) return;
+  if (!modal || !imageWrapper || !image) return;
 
-  image.src = `./images/${encodeURIComponent(imageName)}`;
-  image.alt = `Image de l'indice débloqué : ${description}`;
+  if (clue.imageName) {
+    imageWrapper.hidden = false;
+    image.src = `./images/${encodeURIComponent(clue.imageName)}`;
+    image.alt = `Image de l'indice débloqué : ${clue.description}`;
+  } else {
+    imageWrapper.hidden = true;
+    image.src = '';
+    image.alt = '';
+  }
+
+  const codeText = document.getElementById('clue-modal-code') as HTMLElement | null;
+  const descriptionText = document.getElementById('clue-modal-description') as HTMLElement | null;
+  if (!codeText || !descriptionText) return;
+
+  codeText.textContent = `Code : ${clue.code}`;
+  descriptionText.textContent = clue.description;
+
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
 }
@@ -180,34 +193,7 @@ function closeClueImageModal(): void {
  * Show error message
  */
 function showError(message: string): void {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.className = 'message error';
-    messageDiv.textContent = message;
-    messageDiv.style.display = 'block';
-    
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-      messageDiv.style.display = 'none';
-    }, 3000);
-  }
-}
-
-/**
- * Show success message with clue
- */
-function showSuccess(clue: string): void {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.className = 'message success';
-    messageDiv.textContent = `🎉 Indice : ${clue}`;
-    messageDiv.style.display = 'block';
-    
-    // Auto-hide after 10 seconds
-    setTimeout(() => {
-      messageDiv.style.display = 'none';
-    }, 10000);
-  }
+  window.alert(message);
 }
 
 /**

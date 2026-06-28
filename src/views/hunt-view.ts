@@ -42,8 +42,6 @@ export function displayHuntView() {
           >
           <button type="submit" class="btn-primary">Débloquer l'indice</button>
         </form>
-        
-        <div id="message" class="message" style="display: none;"></div>
       </section>
       
       <!-- Unlocked Clues Section -->
@@ -57,9 +55,20 @@ export function displayHuntView() {
 
     <!-- Clue Image Modal -->
     <div id="clue-image-modal" class="clue-image-modal" hidden>
-      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Image de l'indice débloqué">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Indice débloqué">
         <button id="clue-image-close" class="modal-close" aria-label="Fermer le popup">×</button>
-        <img id="clue-image" src="" alt="Image de l'indice débloqué">
+        <div class="modal-inner">
+          <div class="modal-image-wrapper" hidden>
+            <img id="clue-image" src="" alt="Image de l'indice débloqué">
+          </div>
+          <div class="modal-clue-details">
+            <div class="modal-header">
+              <h2 id="clue-modal-title">Indice débloqué</h2>
+              <p id="clue-modal-code" class="clue-modal-code"></p>
+            </div>
+            <p id="clue-modal-description" class="clue-modal-description"></p>
+          </div>
+        </div>
       </div>
     </div>
   `;
