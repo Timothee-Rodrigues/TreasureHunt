@@ -241,7 +241,25 @@ function renderUnlockedClues(): void {
     clueElement.appendChild(codeElement);
     clueElement.appendChild(textElement);
     clueElement.appendChild(timeElement);
-    
+
+    clueElement.addEventListener('click', () => {
+      const clickedClue = findClueByCode(unlockedClue.code);
+      if (clickedClue && currentHunt) {
+        showClueImageModal(clickedClue, currentHunt);
+      }
+    });
+
+    clueElement.tabIndex = 0;
+    clueElement.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        const clickedClue = findClueByCode(unlockedClue.code);
+        if (clickedClue && currentHunt) {
+          showClueImageModal(clickedClue, currentHunt);
+        }
+      }
+    });
+
     container.appendChild(clueElement);
   });
 }

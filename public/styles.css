@@ -365,6 +365,7 @@ main {
   border-radius: 0.5rem;
   padding: 1rem;
   transition: transform 0.2s, box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .unlocked-clue:hover {
