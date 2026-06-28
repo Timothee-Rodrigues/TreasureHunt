@@ -564,14 +564,18 @@ footer {
 }
 
 .clue-modal-code {
-  color: #2C2C2C;
-  font-weight: 600;
+  color: #767676;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
 }
 
 .clue-modal-description {
-  color: #3a3a3a;
-  line-height: 1.7;
-  font-size: 1rem;
+  color: #1f1f1f;
+  line-height: 1.85;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 /* Responsive Design */
